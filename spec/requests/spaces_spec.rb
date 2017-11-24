@@ -51,9 +51,8 @@ RSpec.describe 'Spaces API', type: :request do
       end
     end
 
-    describe "POST /spaces" do
-      let(:valid_attributes) { { store: @store,
-                                 title: "Center aisle",
+    describe "POST /stores/:store_id/spaces" do
+      let(:valid_attributes) { { title: "Center aisle",
                                  size: 3,
                                  price_per_day: 50.00,
                                  price_per_week: 300.00,
