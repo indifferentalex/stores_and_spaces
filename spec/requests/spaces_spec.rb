@@ -106,6 +106,29 @@ RSpec.describe 'Spaces API', type: :request do
       it "returns a 204 status" do
         expect(response).to have_http_status(204)
       end
-    end    
+    end
+
+    describe "GET /stores/:store_id/spaces/:id/price/:start_date/:end_date" do
+      context "when the space exists" do
+        before { get "/stores/#{@store.id}/spaces/#{@space.id}/price/#{Date.parse('01/01/1995').to_s}/#{Date.parse('01/01/1995').to_s}" }
+
+        it "returns the price" do
+          expect(json).not_to be_empty
+          expect(json["price"]).to eq("100.0")
+        end        
+
+        it "returns a 200 status" do
+          expect(response).to have_http_status(200)
+        end
+      end
+
+      context "when the space does not exist" do
+        before { get "/stores/#{@store.id}/spaces/42" }
+
+        it "returns a 404 status" do
+          expect(response).to have_http_status(404)
+        end
+      end
+    end
   end  
 end

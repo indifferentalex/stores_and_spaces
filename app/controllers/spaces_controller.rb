@@ -1,6 +1,6 @@
 class SpacesController < ApplicationController
   before_action :set_store
-  before_action :set_space, only: [:show, :update, :destroy]
+  before_action :set_space, only: [:show, :update, :destroy, :price]
 
   def index
     @spaces = Space.all
@@ -28,7 +28,12 @@ class SpacesController < ApplicationController
     @space.destroy
 
     head :no_content
-  end  
+  end
+
+  def price
+    json_response({ price: @space.price(Date.parse(params[:start_date]),
+                                        Date.parse(params[:end_date]))})
+  end
 
   private
 

@@ -36,5 +36,37 @@ RSpec.describe Space, :type => :model do
 
       expect(subject).to_not be_valid
     end
+
+    it "should cost 100.00 for one day" do
+      expect(subject.price(Date.parse("01/01/1995"), Date.parse("01/01/1995"))).to eq(100.00)
+    end
+
+    it "should cost 300.00 for three days" do
+      expect(subject.price(Date.parse("01/01/1995"), Date.parse("03/01/1995"))).to eq(300.00)
+    end
+
+    it "should cost 500.00 for one week" do
+      expect(subject.price(Date.parse("01/01/1995"), Date.parse("07/01/1995"))).to eq(500.00)
+    end
+
+    it "should cost 700.00 for one week and two days" do
+      expect(subject.price(Date.parse("01/01/1995"), Date.parse("09/01/1995"))).to eq(700.00)
+    end
+
+    it "should cost 1500.00 for one month" do
+      expect(subject.price(Date.parse("01/01/1995"), Date.parse("30/01/1995"))).to eq(1500.00)
+    end
+
+    it "should cost 1600.00 for one month and one day" do
+      expect(subject.price(Date.parse("01/01/1995"), Date.parse("31/01/1995"))).to eq(1600.00)
+    end
+
+    it "should cost 2000.00 for one month and one week" do
+      expect(subject.price(Date.parse("01/01/1995"), Date.parse("06/02/1995"))).to eq(2000.00)
+    end
+
+    it "should cost 2200.00 for one month and one week and two days" do
+      expect(subject.price(Date.parse("01/01/1995"), Date.parse("08/02/1995"))).to eq(2200.00)
+    end
   end
 end
