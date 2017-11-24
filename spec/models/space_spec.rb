@@ -19,6 +19,12 @@ RSpec.describe Space, :type => :model do
       expect(subject).to be_valid
     end
 
+    it "is not valid without a store" do
+      subject.store = nil
+
+      expect(subject).to_not be_valid
+    end
+
     it "is not valid without a title" do
       subject.title = nil
 

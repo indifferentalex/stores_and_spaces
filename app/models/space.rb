@@ -1,7 +1,7 @@
 class Space < ApplicationRecord
   belongs_to :store
 
-  validates_presence_of :title, :size, :price_per_day
+  validates_presence_of :store, :title, :size, :price_per_day
 
   def price(start_date, end_date)
     total_price = BigDecimal.new("0.0")
