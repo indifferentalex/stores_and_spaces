@@ -35,7 +35,7 @@ RSpec.describe 'Spaces API', type: :request do
         it "returns the space" do
           expect(json).not_to be_empty
           expect(json["id"]).to eq(@space.id)
-        end        
+        end  
 
         it "returns a 200 status" do
           expect(response).to have_http_status(200)

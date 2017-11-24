@@ -28,4 +28,8 @@ RSpec.describe Store, :type => :model do
 
     expect(subject).to_not be_valid
   end
+
+  it "should be able to count it's spaces" do
+    expect(subject.spaces.count).to eq(0)
+  end
 end

@@ -6,6 +6,13 @@ RSpec.describe 'Stores API', type: :request do
       @store = Store.create!(title: "Lidl",
                              city: "Berlin",
                              street: "Kurfürstendamm 1")
+
+      @space = Space.create!(store: @store,
+                             title: "Corner near registers",
+                             size: 6,
+                             price_per_day: 100.00,
+                             price_per_week: 500.00,
+                             price_per_month: 1500.00)
     end
 
     describe "GET /stores" do
@@ -41,6 +48,15 @@ RSpec.describe 'Stores API', type: :request do
         it "returns a 404 status" do
           expect(response).to have_http_status(404)
         end
+      end
+
+      context "when the store exists and there is a space" do
+        before { get "/stores/#{@store.id}" }
+        
+        it "returns the spaces_count" do
+          expect(json).not_to be_empty
+          expect(json["spaces_count"]).to eq(1)
+        end 
       end
     end
 
