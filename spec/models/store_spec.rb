@@ -2,7 +2,9 @@ require "rails_helper"
 
 RSpec.describe Store, :type => :model do
   subject {
-    store = Store.new(title: "Lidl", city: "Berlin", street: "Kurfürstendamm 1")
+    store = Store.new(title: "Lidl",
+                      city: "Berlin",
+                      street: "Kurfürstendamm 1")
   }
 
   it "is valid with valid attributes" do
