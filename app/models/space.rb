@@ -4,15 +4,17 @@ class Space < ApplicationRecord
   validates_presence_of :title, :size, :price_per_day
 
   def price(start_date, end_date)
+    total_price = BigDecimal.new("0.0")
+
     total_days = end_date - start_date + 1
 
-    total_price = BigDecimal.new("0.0")
+    return total_price if total_days <= 0
 
     if price_per_month
       total_months = (total_days / 30).floor
 
       total_price += total_months * price_per_month
-      
+
       total_days -= total_months * 30
     end
 
