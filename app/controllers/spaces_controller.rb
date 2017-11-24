@@ -1,9 +1,18 @@
 class SpacesController < ApplicationController
+  FILTER_TYPES = { "eq": "=", "like": "LIKE", "gt": ">", "lt": "<" }
+
   before_action :set_store
   before_action :set_space, only: [:show, :update, :destroy, :price]
 
   def index
-    @spaces = Space.all
+    @spaces = @store.spaces
+
+    space_params.except(:store_id).each do |attribute, filter|
+      filter_type = filter.split(":")[0]
+      filter_value = filter.split(":")[1]
+
+      @spaces = @spaces.where(attribute + " " + FILTER_TYPES[filter_type.to_sym] + " ?", filter_value)
+    end
 
     json_response(@spaces)
   end

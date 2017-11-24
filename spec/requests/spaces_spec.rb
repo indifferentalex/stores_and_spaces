@@ -4,15 +4,15 @@ RSpec.describe 'Spaces API', type: :request do
   context "with a single store and single space" do
     before do
       @store = Store.create!(title: "Lidl",
-                        city: "Berlin",
-                        street: "Kurfürstendamm 1")
+                             city: "Berlin",
+                             street: "Kurfürstendamm 1")
       
       @space = Space.create!(store: @store,
-                        title: "Corner near registers",
-                        size: 6,
-                        price_per_day: 100.00,
-                        price_per_week: 500.00,
-                        price_per_month: 1500.00)      
+                             title: "Corner near registers",
+                             size: 6,
+                             price_per_day: 100.00,
+                             price_per_week: 500.00,
+                             price_per_month: 1500.00)      
     end
 
     describe "GET /stores/:store_id/spaces" do
@@ -128,6 +128,49 @@ RSpec.describe 'Spaces API', type: :request do
         it "returns a 404 status" do
           expect(response).to have_http_status(404)
         end
+      end
+    end
+
+    describe "GET /stores/:store_id/spaces?title=eq:Corner\%20near\%20registers" do
+      before { get "/stores/#{@store.id}/spaces?title=eq:Corner\%20near\%20registers" }
+
+      it "returns a single space" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(1)
+      end
+    end 
+
+    describe "GET /stores/:store_id/spaces?title=eq:Aisle" do
+      before { get "/stores/#{@store.id}/spaces?title=eq:Aisle" }
+
+      it "does not return any spaces" do
+        expect(json).to be_empty
+      end
+    end
+
+    describe "GET /stores/:store_id/spaces?price_per_day=gt:30" do
+      before { get "/stores/#{@store.id}/spaces?price_per_day=gt:30" }
+
+      it "returns a single space" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(1)
+      end
+    end
+
+    describe "GET /stores/:store_id/spaces?price_per_day=eq:100" do
+      before { get "/stores/#{@store.id}/spaces?price_per_day=eq:100" }
+
+      it "returns a single space" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(1)
+      end
+    end
+
+    describe "GET /stores/:store_id/spaces?price_per_day=lt:30" do
+      before { get "/stores/#{@store.id}/spaces?price_per_day=lt:30" }
+
+      it "does not return any spaces" do
+        expect(json).to be_empty
       end
     end
   end  

@@ -1,8 +1,26 @@
 class StoresController < ApplicationController
+  FILTER_TYPES = { "eq": "=", "like": "LIKE", "gt": ">", "lt": "<" }
+
   before_action :set_store, only: [:show, :update, :destroy]
 
   def index
     @stores = Store.all
+
+    store_params.each do |attribute, filter|
+      filter_type = filter.split(":")[0]
+      filter_value = filter.split(":")[1]
+
+      @stores = @stores.where(attribute + " " + FILTER_TYPES[filter_type.to_sym] + " ?", filter_value)
+    end
+
+    # optimized
+    #
+    # query_string = store_params.to_hash.map { |attribute, filter|
+    #   filter_type = filter.split(":")[0];
+    #   attribute + " " + FILTER_TYPES[filter_type.to_sym] + " ?"
+    # }.join(" AND ")
+
+    # @stores = @stores.where(query_string, store_params.to_hash.map { |attribute, filter| filter.split(":")[1] })    
 
     json_response(@stores)
   end

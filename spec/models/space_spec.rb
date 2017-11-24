@@ -8,11 +8,11 @@ RSpec.describe Space, :type => :model do
                         street: "Kurfürstendamm 1")
       
       Space.new(store: store,
-                        title: "Corner near registers",
-                        size: 6,
-                        price_per_day: 100.00,
-                        price_per_week: 500.00,
-                        price_per_month: 1500.00)
+                title: "Corner near registers",
+                size: 6,
+                price_per_day: 100.00,
+                price_per_week: 500.00,
+                price_per_month: 1500.00)
     }
 
     it "is valid with valid attributes" do

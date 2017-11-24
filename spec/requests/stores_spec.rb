@@ -4,8 +4,8 @@ RSpec.describe 'Stores API', type: :request do
   context "with a single store" do
     before do
       @store = Store.create!(title: "Lidl",
-                        city: "Berlin",
-                        street: "Kurfürstendamm 1")
+                             city: "Berlin",
+                             street: "Kurfürstendamm 1")
     end
 
     describe "GET /stores" do
@@ -97,5 +97,52 @@ RSpec.describe 'Stores API', type: :request do
         expect(response).to have_http_status(204)
       end
     end    
-  end  
+  end
+
+  context "with a couple of stores" do
+    before do
+      Store.create!(title: "Lidl",
+                    city: "Berlin",
+                    street: "Kurfürstendamm 1")
+
+      Store.create!(title: "Aldi",
+                    city: "Berlin",
+                    street: "Kurfürstendamm 2")
+    end
+
+    describe "GET /stores" do
+      before { get "/stores" }
+
+      it "returns stores" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(2)
+      end
+    end
+
+    describe "GET /stores?title=eq:Auchan" do
+      before { get "/stores?title=eq:Auchan" }
+
+      it "does not return any stores" do
+        expect(json).to be_empty
+      end
+    end    
+
+    describe "GET /stores?title=eq:Aldi" do
+      before { get "/stores?title=eq:Aldi" }
+
+      it "returns a single store" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(1)
+      end
+    end
+
+    describe "GET /stores?title=like:Ald_" do
+      before { get "/stores?title=like:Ald_" }
+
+      it "returns a single store" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(1)
+      end
+    end
+  end 
 end
